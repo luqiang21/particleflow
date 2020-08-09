@@ -1,8 +1,12 @@
 import os
-import sys
-start = int(sys.argv[1])
-stop = int(sys.argv[2])
-for item in range(start,stop):
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--start", type=int, default=1, help="start index")
+parser.add_argument("--stop", type=int, default=10, help="stop index")
+args = parser.parse_args()
+
+for item in range(args.start,args.stop):
     all_done = all([os.path.isfile('/particleflowvol/TTbar_14TeV_TuneCUETP8M1_cfi/raw/pfntuple_{}_{}.pkl'.format(item, j)) for j in range(0,5)])
     if all_done:
         print('{} all done'.format(item))
