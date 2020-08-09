@@ -12,4 +12,4 @@ for item in range(args.start,args.stop):
         print('{} all done'.format(item))
     else:
         print('{} not done'.format(item))
-        os.system('python test/postprocessing2.py --input /particleflowvol/TTbar_14TeV_TuneCUETP8M1_cfi/pfntuple_{}.root  --events-per-file 1 --save-normalized-table --outpath /particleflowvol/TTbar_14TeV_TuneCUETP8M1_cfi/raw'.format(item))
+        os.system('python /opt/repo/particleflow/test/postprocessing2.py --input /particleflowvol/TTbar_14TeV_TuneCUETP8M1_cfi/pfntuple_{}.root  --events-per-file 1 --save-normalized-table --outpath /particleflowvol/TTbar_14TeV_TuneCUETP8M1_cfi/raw'.format(item))
