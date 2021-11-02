@@ -14,9 +14,9 @@ import tensorflow as tf
 import tensorflow_addons as tfa
 import keras_tuner as kt
 
-from tfmodel.data import Dataset
-from tfmodel.onecycle_scheduler import OneCycleScheduler, MomentumOneCycleScheduler
-from tfmodel.datasets import CMSDatasetFactory, DelphesDatasetFactory
+from .data import Dataset
+from .onecycle_scheduler import OneCycleScheduler, MomentumOneCycleScheduler
+#from .datasets import CMSDatasetFactory, DelphesDatasetFactory
 
 
 def load_config(config_file_path):

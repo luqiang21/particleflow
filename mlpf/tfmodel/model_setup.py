@@ -30,9 +30,9 @@ import sklearn
 import sklearn.metrics
 import onnxruntime
 
-from tfmodel.onecycle_scheduler import OneCycleScheduler, MomentumOneCycleScheduler
-from tfmodel.callbacks import CustomTensorBoard
-from tfmodel.utils import get_lr_schedule, get_optimizer, make_weight_function, targets_multi_output
+from .onecycle_scheduler import OneCycleScheduler, MomentumOneCycleScheduler
+from .callbacks import CustomTensorBoard
+from .utils import get_lr_schedule, get_optimizer, make_weight_function, targets_multi_output
 import tensorflow_datasets as tfds
 
 from tensorflow.keras.metrics import Recall, CategoricalAccuracy
