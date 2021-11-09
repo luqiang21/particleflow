@@ -10,6 +10,17 @@ from numpy.lib.recfunctions import append_fields
 
 regularizer_weight = 0.0
 
+def gathernd2gather(data, indices):
+    batch = data.shape[0]
+    output = None
+    templist = []
+    for i in range(batch):
+        temp = tf.gather(data[i], indices[i])
+        temp = tf.expand_dims(temp, axis=0)
+        templist.append(temp)
+    output = tf.concat(templist, 0)
+    return output
+
 def split_indices_to_bins(cmul, nbins, bin_size):
     bin_idx = tf.argmax(cmul, axis=-1)
     bins_split = tf.reshape(tf.argsort(bin_idx), (nbins, bin_size))
@@ -42,8 +53,8 @@ def pairwise_learnable_dist(A, B, ffn, training=False):
     inds1 = tf.stack([mg[0],mg[1],mg[2]], axis=-1)
     inds2 = tf.stack([mg[0],mg[1],mg[3]], axis=-1)
     res = tf.concat([
-        tf.gather_nd(A, inds1),
-        tf.gather_nd(B, inds2)], axis=-1
+        gathernd2gather(A, inds1),
+        gathernd2gather(B, inds2)], axis=-1
     ) #(batch, bin, elem, elem, feat)
 
     #run a feedforward net on (src, dst) -> 1
@@ -402,9 +413,9 @@ class MessageBuildingLayerLSH(tf.keras.layers.Layer):
         mul = tf.linalg.matmul(x_msg, self.codebook_random_rotations[:, :n_bins//2])
         cmul = tf.concat([mul, -mul], axis=-1)
         bins_split = split_indices_to_bins_batch(cmul, n_bins, self.bin_size, msk)
-        x_msg_binned = tf.gather(x_msg, bins_split, batch_dims=1)
-        x_features_binned = tf.gather(x_node, bins_split, batch_dims=1)
-        msk_f_binned = tf.gather(msk_f, bins_split, batch_dims=1)
+        x_msg_binned = gathernd2gather(x_msg, bins_split)
+        x_features_binned = gathernd2gather(x_node, bins_split)
+        msk_f_binned = gathernd2gather(msk_f, bins_split)
 
         #Run the node-to-node kernel (distance computation / graph building / attention)
         dm = self.kernel(x_msg_binned, msk_f_binned, training=training)
